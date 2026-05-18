@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JIET AI Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="background">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <div class="brand">
+                <div class="logo-circle">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2>JIET Universe</h2>
+            </div>
+            
+
+            
+            <div class="settings-section">
+                <h3><i class="fa-solid fa-gear"></i> Settings</h3>
+                
+                <p class="settings-desc">Enter your Gemini API Key to enable advanced LLM reasoning, detailed contextual synthesis, and conversational intelligence.</p>
+                <div class="input-group">
+                    <input type="password" id="api-key-input" placeholder="Paste API Key...">
+                    <button id="save-key-btn" title="Save API Key"><i class="fa-solid fa-check"></i></button>
+                </div>
+                <div id="key-status" class="status-msg"></div>
+            </div>
+
+            <div class="settings-section">
+                <h3><i class="fa-solid fa-sliders"></i> RAG Settings</h3>
+                <p class="settings-desc">Fine-tune the RAG parameters for optimal retrieval and AI generation.</p>
+                
+                <div class="range-group" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span>Top-K (Sources):</span>
+                        <span id="top-k-value" style="color: var(--accent-color); font-weight: bold;">4</span>
+                    </div>
+                    <input type="range" id="top-k-slider" min="1" max="10" value="4" style="width: 100%; accent-color: var(--accent-color);">
+                </div>
+
+                <div class="range-group" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span>Temperature:</span>
+                        <span id="temp-value" style="color: var(--accent-color); font-weight: bold;">0.7</span>
+                    </div>
+                    <input type="range" id="temp-slider" min="0.0" max="1.0" step="0.1" value="0.7" style="width: 100%; accent-color: var(--accent-color);">
+                </div>
+
+                <div class="range-group" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span>Chunk Size:</span>
+                        <span id="chunk-size-value" style="color: var(--accent-color); font-weight: bold;">1000</span>
+                    </div>
+                    <input type="range" id="chunk-size-slider" min="200" max="2000" step="100" value="1000" style="width: 100%; accent-color: var(--accent-color);">
+                </div>
+
+                <div class="range-group" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span>Chunk Overlap:</span>
+                        <span id="chunk-overlap-value" style="color: var(--accent-color); font-weight: bold;">150</span>
+                    </div>
+                    <input type="range" id="chunk-overlap-slider" min="0" max="500" step="50" value="150" style="width: 100%; accent-color: var(--accent-color);">
+                </div>
+
+                <button id="reindex-btn" style="width: 100%; padding: 10px; background: rgba(37, 99, 235, 0.2); border: 1px solid var(--accent-color); color: var(--text-primary); border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                    <i class="fa-solid fa-arrows-rotate"></i> Rebuild Vector DB
+                </button>
+                <div id="reindex-status" class="status-msg"></div>
+            </div>
+
+            <div class="sidebar-footer">
+                <p>Powered by RAG & Gemini</p>
+                <p class="small-text">Jodhpur Institute of Engineering & Technology</p>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-main glass-panel">
+            <header class="chat-header">
+                <div>
+                    <h1>AI Assistant</h1>
+                    <p>Access admissions, placements, courses, and campus intelligence.</p>
+                </div>
+                <div class="header-actions">
+                    <div id="rag-status-badge" class="rag-status-badge local-mode">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Local RAG</span>
+                    </div>
+                    <button id="clear-chat" title="Clear Conversation"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            </header>
+
+            <div class="chat-container" id="chat-container">
+                <div class="message-container bot-container">
+                    <div class="message bot-message">
+                        <div class="avatar"><i class="fa-solid fa-robot"></i></div>
+                        <div class="message-content">
+                            Hello! I'm the official AI Assistant for JIET Jodhpur. How can I help you today?
+                        </div>
+                    </div>
+                    <div class="timestamp">System</div>
+                </div>
+                
+                <div class="suggestions-container" id="suggestions">
+                    <div class="suggestion-chip" onclick="fillAndSend('What are the admission requirements for B.Tech?')">
+                        <i class="fa-solid fa-file-contract"></i> Admission Process
+                    </div>
+                    <div class="suggestion-chip" onclick="fillAndSend('Tell me about the placement records and top recruiters.')">
+                        <i class="fa-solid fa-briefcase"></i> Placements
+                    </div>
+                    <div class="suggestion-chip" onclick="fillAndSend('What facilities are available on campus?')">
+                        <i class="fa-solid fa-building-columns"></i> Campus Facilities
+                    </div>
+                    <div class="suggestion-chip" onclick="fillAndSend('What B.Tech specializations do you offer?')">
+                        <i class="fa-solid fa-laptop-code"></i> B.Tech Programs
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="input-area">
+                <form id="chat-form">
+                    <textarea id="user-input" placeholder="Type your question about JIET..." autocomplete="off" rows="1"></textarea>
+                    <button type="submit" id="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </main>
+
+        <!-- RAG Inspector Panel -->
+        <aside class="inspector-panel glass-panel" id="rag-inspector">
+            <div class="inspector-header">
+                <h3><i class="fa-solid fa-magnifying-glass"></i> RAG Inspector</h3>
+                <p>View retrieved context</p>
+            </div>
+            <div class="inspector-content" id="inspector-content">
+                <div class="empty-state">
+                    <i class="fa-solid fa-database"></i>
+                    <p>No context retrieved yet.</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
