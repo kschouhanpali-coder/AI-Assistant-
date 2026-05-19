@@ -1,8 +1,14 @@
 // Dynamic API Base URL: use relative paths only if served on the FastAPI port (8000), fallback to current hostname
 const hostname = window.location.hostname || '127.0.0.1';
-const API_BASE = window.location.port === '8000' 
-    ? '' 
-    : `http://${hostname}:8000`;
+let API_BASE = `http://${hostname}:8000`;
+if (window.location.port === '8000') {
+    API_BASE = '';
+} else if (hostname.includes('github.io')) {
+    // When hosted on GitHub Pages (HTTPS), point to the local backend.
+    // Note: You must run the Python backend locally, and your browser must allow 
+    // mixed content (or localhost access) for this to work.
+    API_BASE = 'http://127.0.0.1:8000';
+}
 
 const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
