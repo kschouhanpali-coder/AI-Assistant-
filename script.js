@@ -122,6 +122,16 @@ saveKeyBtn.addEventListener('click', () => {
 const apiUrlInput = document.getElementById('api-url-input');
 const saveUrlBtn = document.getElementById('save-url-btn');
 const urlStatus = document.getElementById('url-status');
+const tunnelSettingsGroup = document.getElementById('tunnel-settings-group');
+
+if (tunnelSettingsGroup) {
+    const hostname = window.location.hostname || '';
+    if (hostname.includes('github.io')) {
+        tunnelSettingsGroup.style.display = 'block';
+    } else {
+        tunnelSettingsGroup.style.display = 'none';
+    }
+}
 
 if (apiUrlInput) {
     apiUrlInput.value = API_BASE;
