@@ -346,7 +346,13 @@ async function sendMessage(message) {
     } catch (error) {
         console.error('Error:', error);
         removeTypingIndicator();
-        chatContainer.appendChild(createMessageElement('Sorry, I am having trouble reaching the assistant server. Please check your connection and try again.', false));
+        
+        let errorMsg = 'Sorry, I am having trouble reaching the assistant server. Please check your connection and try again.';
+        if (window.location.protocol === 'https:' || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')) {
+            errorMsg = '⚠️ **Connection Error:** Browsers block secure online pages from accessing local backend servers directly. To run 100% locally with zero configuration, please open **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in a new browser tab to start chatting!';
+        }
+        
+        chatContainer.appendChild(createMessageElement(errorMsg, false));
     } finally {
         sendBtn.disabled = false;
         userInput.focus();
