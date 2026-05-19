@@ -2,6 +2,12 @@
 
 An intelligent conversational AI interface for JIET Jodhpur that provides instant access to admissions, placements, courses, and campus information using advanced retrieval-augmented generation (RAG) technology.
 
+## 🌐 Live Demo
+
+**[👉 Try it here: kschouhanpali-coder.github.io/jiet-chatbot/](https://kschouhanpali-coder.github.io/jiet-chatbot/)**
+
+---
+
 ## Features ✨
 
 - **Smart Query Understanding**: Natural language processing powered by Google Gemini API
