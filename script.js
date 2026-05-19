@@ -283,6 +283,19 @@ marked.setOptions({
 async function sendMessage(message) {
     if (!message.trim()) return;
 
+    // Strict validation: chatbot will only run with the help of an API key
+    if (!apiKey || apiKey.trim() === '') {
+        // Hide suggestions
+        if (suggestions) {
+            suggestions.style.display = 'none';
+        }
+        chatContainer.appendChild(createMessageElement('⚠️ Please enter your Gemini API Key in the Settings panel on the left to start chatting!', false));
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        userInput.value = '';
+        userInput.style.height = '44px';
+        return;
+    }
+
     // Hide suggestions
     if (suggestions) {
         suggestions.style.display = 'none';

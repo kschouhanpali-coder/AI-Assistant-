@@ -87,17 +87,19 @@ async def chat(request: ChatRequest):
     context_used_list = [doc.page_content for doc in relevant_docs]
     is_genai_active = False
     
-    # Generate response
-    if request.api_key and request.api_key.strip() != "":
-        try:
-            genai.configure(api_key=request.api_key)
-            
-            # Create GenerationConfig to apply temperature
-            generation_config = genai.types.GenerationConfig(
-                temperature=request.temperature
-            )
-            model = genai.GenerativeModel('gemini-pro', generation_config=generation_config)
-            prompt = f"""You are the official AI assistant for Jodhpur Institute of Engineering & Technology (JIET).
+    # Generate response (Strictly requires Gemini API Key to run)
+    if not request.api_key or request.api_key.strip() == "":
+        raise HTTPException(status_code=400, detail="Gemini API Key is strictly required to use the chatbot.")
+        
+    try:
+        genai.configure(api_key=request.api_key)
+        
+        # Create GenerationConfig to apply temperature
+        generation_config = genai.types.GenerationConfig(
+            temperature=request.temperature
+        )
+        model = genai.GenerativeModel('gemini-pro', generation_config=generation_config)
+        prompt = f"""You are the official AI assistant for Jodhpur Institute of Engineering & Technology (JIET).
 You must answer the user's question politely and professionally, using ONLY the information provided in the Context below.
 If the context doesn't contain the answer, say you don't know based on the provided document.
 Use markdown for formatting (bullet points, bold text). Keep it concise but comprehensive.
@@ -107,15 +109,12 @@ Context:
 
 User Question: {request.query}
 """
-            response = model.generate_content(prompt)
-            answer = response.text
-            is_genai_active = True
-        except Exception as e:
-            print(f"Gemini API Error: {e}")
-            answer = relevant_docs[0].page_content
-            is_genai_active = False
-    else:
-        # Fallback if no API key
+        response = model.generate_content(prompt)
+        answer = response.text
+        is_genai_active = True
+    except Exception as e:
+        print(f"Gemini API Error: {e}")
+        # Fallback to direct chunk retrieval only if API call itself failed but key was provided
         answer = relevant_docs[0].page_content
         is_genai_active = False
         
