@@ -7,7 +7,7 @@ if (window.location.port === '8000') {
     // When hosted on GitHub Pages (HTTPS), point to the local backend.
     // Note: You must run the Python backend locally, and your browser must allow 
     // mixed content (or localhost access) for this to work.
-    API_BASE = 'http://127.0.0.1:8000';
+    API_BASE = 'http://localhost:8000';
 }
 
 const chatForm = document.getElementById('chat-form');
