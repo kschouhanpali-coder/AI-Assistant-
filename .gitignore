@@ -32,3 +32,6 @@ faiss_index/
 # Master document
 JIET_Master_Document.md
 server.log
+
+cloudflared
+tunnel.log

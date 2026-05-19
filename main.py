@@ -96,7 +96,7 @@ async def chat(request: ChatRequest):
             generation_config = genai.types.GenerationConfig(
                 temperature=request.temperature
             )
-            model = genai.GenerativeModel('gemini-1.5-flash', generation_config=generation_config)
+            model = genai.GenerativeModel('gemini-pro', generation_config=generation_config)
             prompt = f"""You are the official AI assistant for Jodhpur Institute of Engineering & Technology (JIET).
 You must answer the user's question politely and professionally, using ONLY the information provided in the Context below.
 If the context doesn't contain the answer, say you don't know based on the provided document.
