@@ -118,7 +118,67 @@ saveKeyBtn.addEventListener('click', () => {
     }
 });
 
-// Backend configuration is fully automatic under the hood
+// Load and manage Backend / Tunnel URL
+const apiUrlInput = document.getElementById('api-url-input');
+const saveUrlBtn = document.getElementById('save-url-btn');
+const urlStatus = document.getElementById('url-status');
+const tunnelSettingsGroup = document.getElementById('tunnel-settings-group');
+
+// Double-click Settings title to toggle hidden Developer Mode panel
+const settingsHeader = document.querySelector('.sidebar h3');
+if (settingsHeader && tunnelSettingsGroup) {
+    settingsHeader.style.cursor = 'pointer';
+    settingsHeader.title = 'Double-click to toggle advanced settings';
+    settingsHeader.addEventListener('dblclick', () => {
+        const isHidden = tunnelSettingsGroup.style.display === 'none';
+        tunnelSettingsGroup.style.display = isHidden ? 'block' : 'none';
+        urlStatus.textContent = isHidden ? 'Advanced developer settings revealed!' : '';
+        urlStatus.style.color = '#38bdf8';
+        if (isHidden) {
+            setTimeout(() => { urlStatus.textContent = ''; }, 3000);
+        }
+    });
+}
+
+if (apiUrlInput) {
+    apiUrlInput.value = localStorage.getItem('jiet_backend_url') || '';
+}
+
+if (saveUrlBtn) {
+    saveUrlBtn.addEventListener('click', () => {
+        const url = apiUrlInput.value.trim();
+        if (url) {
+            const normalizedUrl = url.replace(/\/$/, '');
+            
+            // Validate secure protocols on HTTPS hosting
+            if (window.location.protocol === 'https:' && normalizedUrl.startsWith('http://')) {
+                urlStatus.textContent = '⚠️ HTTPS pages require a secure https:// Tunnel URL!';
+                urlStatus.style.color = '#f87171';
+                return;
+            }
+            
+            localStorage.setItem('jiet_backend_url', normalizedUrl);
+            API_BASE = normalizedUrl;
+            urlStatus.textContent = 'URL saved successfully!';
+            urlStatus.style.color = '#4ade80';
+            setTimeout(() => { urlStatus.textContent = ''; }, 3000);
+        } else {
+            localStorage.removeItem('jiet_backend_url');
+            // Reset to defaults
+            const hostname = window.location.hostname || '127.0.0.1';
+            API_BASE = `http://${hostname}:8000`;
+            if (window.location.port === '8000') {
+                API_BASE = '';
+            } else if (hostname.includes('github.io')) {
+                API_BASE = '';
+            }
+            apiUrlInput.value = '';
+            urlStatus.textContent = 'Reset to default URL';
+            urlStatus.style.color = '#f87171';
+            setTimeout(() => { urlStatus.textContent = ''; }, 3000);
+        }
+    });
+}
 
 
 
