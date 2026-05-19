@@ -1,4 +1,7 @@
 import os
+import re
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -90,11 +93,10 @@ async def chat(request: ChatRequest):
     # Generate response (Uses Gemini if API key is provided, falls back to direct RAG instantly otherwise)
     if request.api_key and request.api_key.strip() != "":
         try:
-            # Clean API Key to strip any hidden unicode characters
+            # Clean API Key: strip ALL non-alphanumeric characters to prevent gRPC C++ hangs
             cleaned_key = re.sub(r'[^a-zA-Z0-9_-]', '', request.api_key)
             genai.configure(api_key=cleaned_key)
             
-            # Create GenerationConfig to apply temperature
             generation_config = genai.types.GenerationConfig(
                 temperature=request.temperature
             )
@@ -109,12 +111,21 @@ Context:
 
 User Question: {request.query}
 """
-            response = model.generate_content(prompt, request_options={"timeout": 3.0})
+            # Hard 5-second timeout: runs Gemini in a separate thread so Python can kill it
+            loop = asyncio.get_event_loop()
+            executor = ThreadPoolExecutor(max_workers=1)
+            response = await asyncio.wait_for(
+                loop.run_in_executor(executor, model.generate_content, prompt),
+                timeout=5.0
+            )
             answer = response.text
             is_genai_active = True
+        except asyncio.TimeoutError:
+            print("Gemini API timed out after 5 seconds, falling back to direct RAG.")
+            answer = relevant_docs[0].page_content
+            is_genai_active = False
         except Exception as e:
             print(f"Gemini API Error: {e}")
-            # Fallback to direct chunk retrieval instantly if API call failed
             answer = relevant_docs[0].page_content
             is_genai_active = False
     else:
