@@ -1,7 +1,7 @@
-// Dynamic API Base URL: use relative paths only if served on the FastAPI port (8000), fallback to localhost:8000 otherwise
+// Dynamic API Base URL: use relative paths only if served on the FastAPI port (8000), fallback to current hostname
 const API_BASE = window.location.port === '8000' 
     ? '' 
-    : 'http://127.0.0.1:8000';
+    : `http://${window.location.hostname}:8000`;
 
 const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
