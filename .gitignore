@@ -29,8 +29,6 @@ Thumbs.db
 # Local search database cache
 faiss_index/
 
-# Master document
-JIET_Master_Document.md
 server.log
 
 cloudflared
