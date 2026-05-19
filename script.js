@@ -14,8 +14,8 @@ if (!API_BASE) {
     if (window.location.port === '8000') {
         API_BASE = '';
     } else if (hostname.includes('github.io')) {
-        // Fallback default quick tunnel URL from previous session
-        API_BASE = 'https://beginners-sections-beijing-authorization.trycloudflare.com';
+        // No default fallback URL to avoid expired tunnels
+        API_BASE = '';
     }
 } else {
     // Normalize user-provided URL (remove trailing slash if exists)
@@ -153,7 +153,7 @@ if (saveUrlBtn) {
             if (window.location.port === '8000') {
                 API_BASE = '';
             } else if (hostname.includes('github.io')) {
-                API_BASE = 'https://beginners-sections-beijing-authorization.trycloudflare.com';
+                API_BASE = '';
             }
             apiUrlInput.value = API_BASE;
             urlStatus.textContent = 'Reset to default URL';
