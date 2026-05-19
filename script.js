@@ -325,7 +325,21 @@ async function sendMessage(message) {
     } catch (error) {
         console.error('Error:', error);
         removeTypingIndicator();
-        chatContainer.appendChild(createMessageElement('Network error. Is the server running?', false));
+        
+        const errorMarkdown = `❌ **Connection Error: Server Unreachable**
+
+It looks like the chatbot is unable to reach your local backend server.
+
+**To resolve this permanently, choose one of the following methods:**
+
+1. ⚡ **Run Locally (Zero Configuration - Recommended)**:
+   Open **[http://127.0.0.1:8000](http://127.0.0.1:8000)** directly in your browser! This runs 100% locally on your Mac, connects automatically, and completely bypasses all security/network blockages.
+   
+2. 🔗 **Paste Active Secure Tunnel URL**:
+   If you want to use the online GitHub Pages site, start your tunnel locally and paste the secure **https://...** link from your terminal into the **Settings** gear section on the left.
+   * *Your live tunnel link is generated and printed in your terminal when you run \`python3 run_servers.py\`.*`;
+
+        chatContainer.appendChild(createMessageElement(errorMarkdown, false));
     } finally {
         sendBtn.disabled = false;
         userInput.focus();
