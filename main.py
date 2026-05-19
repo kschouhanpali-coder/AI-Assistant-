@@ -121,16 +121,16 @@ User Question: {request.query}
             answer = response.text
             is_genai_active = True
         except asyncio.TimeoutError:
-            print("Gemini API timed out after 5 seconds.")
-            answer = "⚠️ The Gemini API request timed out. Please check your network and try again."
+            print("Gemini API timed out after 5 seconds, falling back to direct RAG.")
+            answer = relevant_docs[0].page_content
             is_genai_active = False
         except Exception as e:
             print(f"Gemini API Error: {e}")
-            answer = "⚠️ Invalid API Key or Gemini service error. Please verify your Gemini API Key in the left Settings panel."
+            answer = relevant_docs[0].page_content
             is_genai_active = False
     else:
-        # Require Gemini API Key to run the chatbot, prompting the user if missing
-        answer = "⚠️ Please enter your Gemini API Key in the left Settings panel to start querying the AI Assistant!"
+        # Ultra-fast fallback if no API key is provided
+        answer = relevant_docs[0].page_content
         is_genai_active = False
         
     return ChatResponse(
