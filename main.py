@@ -109,7 +109,7 @@ Context:
 
 User Question: {request.query}
 """
-            response = model.generate_content(prompt)
+            response = model.generate_content(prompt, request_options={"timeout": 3.0})
             answer = response.text
             is_genai_active = True
         except Exception as e:
