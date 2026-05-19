@@ -1,5 +1,13 @@
 // Dynamic API Base URL: prioritize user-saved Backend URL in localStorage, fallback to current environment defaults
 let API_BASE = localStorage.getItem('jiet_backend_url') || '';
+
+// Force secure connection if host is HTTPS to prevent Mixed Content browser blocks
+if (window.location.protocol === 'https:' && API_BASE.startsWith('http://')) {
+    console.warn("Cleared insecure HTTP backend URL on HTTPS page to prevent mixed content blocking.");
+    localStorage.removeItem('jiet_backend_url');
+    API_BASE = '';
+}
+
 if (!API_BASE) {
     const hostname = window.location.hostname || '127.0.0.1';
     API_BASE = `http://${hostname}:8000`;
@@ -124,6 +132,14 @@ if (saveUrlBtn) {
         const url = apiUrlInput.value.trim();
         if (url) {
             const normalizedUrl = url.replace(/\/$/, '');
+            
+            // Validate secure protocols on HTTPS hosting
+            if (window.location.protocol === 'https:' && normalizedUrl.startsWith('http://')) {
+                urlStatus.textContent = '⚠️ HTTPS pages require a secure https:// Tunnel URL!';
+                urlStatus.style.color = '#f87171';
+                return;
+            }
+            
             localStorage.setItem('jiet_backend_url', normalizedUrl);
             API_BASE = normalizedUrl;
             urlStatus.textContent = 'URL saved successfully!';
