@@ -1,13 +1,17 @@
-// Dynamic API Base URL: use relative paths only if served on the FastAPI port (8000), fallback to current hostname
-const hostname = window.location.hostname || '127.0.0.1';
-let API_BASE = `http://${hostname}:8000`;
-if (window.location.port === '8000') {
-    API_BASE = '';
-} else if (hostname.includes('github.io')) {
-    // When hosted on GitHub Pages (HTTPS), point to the local backend.
-    // Note: You must run the Python backend locally, and your browser must allow 
-    // mixed content (or localhost access) for this to work.
-    API_BASE = 'https://beginners-sections-beijing-authorization.trycloudflare.com';
+// Dynamic API Base URL: prioritize user-saved Backend URL in localStorage, fallback to current environment defaults
+let API_BASE = localStorage.getItem('jiet_backend_url') || '';
+if (!API_BASE) {
+    const hostname = window.location.hostname || '127.0.0.1';
+    API_BASE = `http://${hostname}:8000`;
+    if (window.location.port === '8000') {
+        API_BASE = '';
+    } else if (hostname.includes('github.io')) {
+        // Fallback default quick tunnel URL from previous session
+        API_BASE = 'https://beginners-sections-beijing-authorization.trycloudflare.com';
+    }
+} else {
+    // Normalize user-provided URL (remove trailing slash if exists)
+    API_BASE = API_BASE.replace(/\/$/, '');
 }
 
 const chatForm = document.getElementById('chat-form');
@@ -105,6 +109,43 @@ saveKeyBtn.addEventListener('click', () => {
         setTimeout(() => { keyStatus.textContent = ''; }, 3000);
     }
 });
+
+// Load and manage Backend / Tunnel URL
+const apiUrlInput = document.getElementById('api-url-input');
+const saveUrlBtn = document.getElementById('save-url-btn');
+const urlStatus = document.getElementById('url-status');
+
+if (apiUrlInput) {
+    apiUrlInput.value = API_BASE;
+}
+
+if (saveUrlBtn) {
+    saveUrlBtn.addEventListener('click', () => {
+        const url = apiUrlInput.value.trim();
+        if (url) {
+            const normalizedUrl = url.replace(/\/$/, '');
+            localStorage.setItem('jiet_backend_url', normalizedUrl);
+            API_BASE = normalizedUrl;
+            urlStatus.textContent = 'URL saved successfully!';
+            urlStatus.style.color = '#4ade80';
+            setTimeout(() => { urlStatus.textContent = ''; }, 3000);
+        } else {
+            localStorage.removeItem('jiet_backend_url');
+            // Reset to defaults
+            const hostname = window.location.hostname || '127.0.0.1';
+            API_BASE = `http://${hostname}:8000`;
+            if (window.location.port === '8000') {
+                API_BASE = '';
+            } else if (hostname.includes('github.io')) {
+                API_BASE = 'https://beginners-sections-beijing-authorization.trycloudflare.com';
+            }
+            apiUrlInput.value = API_BASE;
+            urlStatus.textContent = 'Reset to default URL';
+            urlStatus.style.color = '#f87171';
+            setTimeout(() => { urlStatus.textContent = ''; }, 3000);
+        }
+    });
+}
 
 
 
