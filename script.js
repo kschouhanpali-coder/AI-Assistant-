@@ -1,10 +1,12 @@
 // Dynamic API Base URL: prioritize user-saved Backend URL in localStorage, fallback to current environment defaults
 let API_BASE = localStorage.getItem('jiet_backend_url') || '';
 const currentHostname = window.location.hostname || '127.0.0.1';
+let isAutoTunnelResolved = false;
 
 // On localhost/127.0.0.1, always bypass saved tunnels and use the local direct server to prevent stale cache blocks
 if (currentHostname === 'localhost' || currentHostname === '127.0.0.1') {
     API_BASE = `http://${currentHostname}:8000`;
+    isAutoTunnelResolved = true;
 } else if (window.location.protocol === 'https:' && API_BASE.startsWith('http://')) {
     console.warn("Cleared insecure HTTP backend URL on HTTPS page to prevent mixed content blocking.");
     localStorage.removeItem('jiet_backend_url');
@@ -12,15 +14,46 @@ if (currentHostname === 'localhost' || currentHostname === '127.0.0.1') {
 }
 
 if (!API_BASE) {
-    API_BASE = `http://${currentHostname}:8000`;
     if (window.location.port === '8000') {
         API_BASE = '';
+        isAutoTunnelResolved = true;
     } else if (currentHostname.includes('github.io')) {
-        API_BASE = '';
+        API_BASE = ''; // Will resolve asynchronously via backend_url.json on demand
+    } else {
+        API_BASE = `http://${currentHostname}:8000`;
     }
 } else {
     // Normalize user-provided URL (remove trailing slash if exists)
     API_BASE = API_BASE.replace(/\/$/, '');
+    isAutoTunnelResolved = true;
+}
+
+// Asynchronously resolve tunnel URL from backend_url.json if running on GitHub Pages
+async function getApiBase() {
+    if (isAutoTunnelResolved && API_BASE) {
+        return API_BASE;
+    }
+
+    if (currentHostname.includes('github.io') || !API_BASE) {
+        try {
+            console.log("Attempting to auto-discover secure tunnel URL...");
+            // Use cache-busting timestamp to prevent stale browser caches
+            const response = await fetch(`./backend_url.json?t=${Date.now()}`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data && data.url) {
+                    console.log("Auto-discovered active secure tunnel:", data.url);
+                    API_BASE = data.url.replace(/\/$/, '');
+                    isAutoTunnelResolved = true;
+                    return API_BASE;
+                }
+            }
+        } catch (e) {
+            console.warn("Could not load backend_url.json:", e);
+        }
+    }
+
+    return API_BASE || `http://${currentHostname}:8000`;
 }
 
 const chatForm = document.getElementById('chat-form');
@@ -65,7 +98,8 @@ if (reindexBtn) {
         reindexBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Rebuilding...';
         if (reindexStatus) reindexStatus.textContent = '';
         try {
-            const res = await fetch(`${API_BASE}/api/reindex`, {
+            const currentApiBase = await getApiBase();
+            const res = await fetch(`${currentApiBase}/api/reindex`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ chunk_size: chunkSize, chunk_overlap: chunkOverlap })
@@ -306,7 +340,8 @@ async function sendMessage(message) {
     try {
         const topK = topKSlider ? parseInt(topKSlider.value) : 4;
         const temperature = tempSlider ? parseFloat(tempSlider.value) : 0.7;
-        const response = await fetch(`${API_BASE}/api/chat`, {
+        const currentApiBase = await getApiBase();
+        const response = await fetch(`${currentApiBase}/api/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
