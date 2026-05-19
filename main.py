@@ -92,8 +92,9 @@ async def chat(request: ChatRequest):
         raise HTTPException(status_code=400, detail="Gemini API Key is strictly required to use the chatbot.")
         
     try:
-        # Crucial fix: strip any hidden newlines, spaces, or carriage returns from copy-pasting
-        cleaned_key = request.api_key.strip().replace("\r", "").replace("\n", "")
+        # Ultimate Fix: Strip all invisible Unicode characters, non-breaking spaces, and tabs
+        # Keep ONLY valid ASCII alphanumeric characters, hyphens, and underscores
+        cleaned_key = re.sub(r'[^a-zA-Z0-9_-]', '', request.api_key)
         genai.configure(api_key=cleaned_key)
         
         # Create GenerationConfig to apply temperature

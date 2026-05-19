@@ -96,23 +96,26 @@ if (reindexBtn) {
 }
 
 // Load API key from local storage
-let apiKey = localStorage.getItem('jiet_api_key') || '';
+let apiKey = (localStorage.getItem('jiet_api_key') || '').replace(/[^a-zA-Z0-9_-]/g, '');
 if (apiKey) {
     apiKeyInput.value = apiKey;
     keyStatus.textContent = 'Key loaded from storage';
 }
 
 saveKeyBtn.addEventListener('click', () => {
-    const key = apiKeyInput.value.trim();
+    // Keep ONLY valid ASCII alphanumeric characters, hyphens, and underscores
+    const key = apiKeyInput.value.replace(/[^a-zA-Z0-9_-]/g, '');
     if (key) {
         localStorage.setItem('jiet_api_key', key);
         apiKey = key;
+        apiKeyInput.value = key; // Update input value with cleaned key
         keyStatus.textContent = 'Saved successfully!';
         keyStatus.style.color = '#4ade80';
         setTimeout(() => { keyStatus.textContent = ''; }, 3000);
     } else {
         localStorage.removeItem('jiet_api_key');
         apiKey = '';
+        apiKeyInput.value = '';
         keyStatus.textContent = 'Key removed';
         keyStatus.style.color = '#f87171';
         setTimeout(() => { keyStatus.textContent = ''; }, 3000);
