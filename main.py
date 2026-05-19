@@ -92,7 +92,9 @@ async def chat(request: ChatRequest):
         raise HTTPException(status_code=400, detail="Gemini API Key is strictly required to use the chatbot.")
         
     try:
-        genai.configure(api_key=request.api_key)
+        # Crucial fix: strip any hidden newlines, spaces, or carriage returns from copy-pasting
+        cleaned_key = request.api_key.strip().replace("\r", "").replace("\n", "")
+        genai.configure(api_key=cleaned_key)
         
         # Create GenerationConfig to apply temperature
         generation_config = genai.types.GenerationConfig(
@@ -114,9 +116,12 @@ User Question: {request.query}
         is_genai_active = True
     except Exception as e:
         print(f"Gemini API Error: {e}")
-        # Fallback to direct chunk retrieval only if API call itself failed but key was provided
-        answer = relevant_docs[0].page_content
-        is_genai_active = False
+        # Return a clean error response so the chatbot never hangs!
+        return ChatResponse(
+            answer="⚠️ **Gemini API Error:** The provided API Key is invalid, contains extra spaces, or has expired. Please verify your Gemini API Key in the Settings sidebar and try again.",
+            context_used=context_used_list,
+            is_genai=False
+        )
         
     return ChatResponse(
         answer=answer,
