@@ -4,7 +4,7 @@ An intelligent conversational AI interface for JIET Jodhpur that provides instan
 
 ## 🌐 Live Demo
 
-**[👉 Try it here: kschouhanpali-coder.github.io/jiet-chatbot/](https://kschouhanpali-coder.github.io/jiet-chatbot/)**
+**[👉 Try it here: kschouhanpali-coder.github.io/jiet-chatbot/]([https://kschouhanpali-coder.github.io/jiet-chatbot/](https://kschouhanpali-coder.github.io/AI-Assistant/))**
 
 ---
 
