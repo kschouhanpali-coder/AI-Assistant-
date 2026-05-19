@@ -1,20 +1,21 @@
 // Dynamic API Base URL: prioritize user-saved Backend URL in localStorage, fallback to current environment defaults
 let API_BASE = localStorage.getItem('jiet_backend_url') || '';
+const currentHostname = window.location.hostname || '127.0.0.1';
 
-// Force secure connection if host is HTTPS to prevent Mixed Content browser blocks
-if (window.location.protocol === 'https:' && API_BASE.startsWith('http://')) {
+// On localhost/127.0.0.1, always bypass saved tunnels and use the local direct server to prevent stale cache blocks
+if (currentHostname === 'localhost' || currentHostname === '127.0.0.1') {
+    API_BASE = `http://${currentHostname}:8000`;
+} else if (window.location.protocol === 'https:' && API_BASE.startsWith('http://')) {
     console.warn("Cleared insecure HTTP backend URL on HTTPS page to prevent mixed content blocking.");
     localStorage.removeItem('jiet_backend_url');
     API_BASE = '';
 }
 
 if (!API_BASE) {
-    const hostname = window.location.hostname || '127.0.0.1';
-    API_BASE = `http://${hostname}:8000`;
+    API_BASE = `http://${currentHostname}:8000`;
     if (window.location.port === '8000') {
         API_BASE = '';
-    } else if (hostname.includes('github.io')) {
-        // No default fallback URL to avoid expired tunnels
+    } else if (currentHostname.includes('github.io')) {
         API_BASE = '';
     }
 } else {
