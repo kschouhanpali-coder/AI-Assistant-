@@ -544,9 +544,15 @@ async function sendMessage(message) {
             console.error('Client-side RAG fallback also failed:', fallbackError);
             removeTypingIndicator();
             
-            let errorMsg = 'Sorry, I am having trouble reaching the assistant server. Please check your connection and try again.';
-            if (window.location.protocol === 'https:' || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')) {
-                errorMsg = '⚠️ **Connection Error:** Browsers block secure online pages from accessing local backend servers directly. To run 100% locally with zero configuration, please open **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in a new browser tab to start chatting!';
+            let errorMsg = `⚠️ **Error:** ${fallbackError.message || 'Unknown error occurred.'}\n\n`;
+            errorMsg += 'Sorry, I am having trouble reaching the assistant server and the local fallback also failed.\n\n';
+            
+            if (window.location.protocol === 'file:') {
+                errorMsg += '💡 **Tip:** You are opening this file directly in your browser (\`file://\`). Browsers block local files from accessing other local files. **To resolve this permanently, please run the backend server using \`python run_servers.py\` and open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your browser.**';
+            } else if (window.location.protocol === 'https:') {
+                errorMsg += '💡 **Tip:** Browsers block secure online pages (\`https\`) from accessing local backend servers directly (\`http\`). Please ensure your secure tunnel is active (via \`run_servers.py\`) and the URL is saved in the Settings panel. Alternatively, run locally via **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**.';
+            } else {
+                errorMsg += '💡 **Tip:** Please ensure the backend server is running via \`python run_servers.py\` and check your connection.';
             }
             
             chatContainer.appendChild(createMessageElement(errorMsg, false));

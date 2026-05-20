@@ -9,8 +9,10 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // Force clear any stale backend URLs to prevent connection errors on GitHub Pages
-        localStorage.removeItem('jiet_backend_url');
+        // Check for existing backend URL to prioritize it
+        if (!localStorage.getItem('jiet_backend_url')) {
+             console.log("No custom backend URL set.");
+        }
     </script>
 </head>
 <body>
