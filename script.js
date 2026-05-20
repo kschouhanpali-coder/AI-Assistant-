@@ -3,6 +3,50 @@ let API_BASE = localStorage.getItem('jiet_backend_url') || '';
 const currentHostname = window.location.hostname || '127.0.0.1';
 let isAutoTunnelResolved = false;
 
+// Global cache for client-side RAG fallback
+let cachedDocumentText = null;
+
+// Client-side simple TF-IDF and keyword matching ranker
+function rankChunks(chunks, query) {
+    const stopWords = new Set(["the", "a", "is", "of", "and", "in", "to", "for", "on", "with", "at", "by", "an", "it", "from", "are", "what", "tell", "me", "about", "how", "can", "you", "we", "i", "do", "does", "any", "some", "my", "your"]);
+    const queryTokens = query.toLowerCase()
+        .replace(/[^\w\s]/g, ' ')
+        .split(/\s+/)
+        .filter(t => t.length > 1 && !stopWords.has(t));
+        
+    if (queryTokens.length === 0) {
+        queryTokens.push(...query.toLowerCase().replace(/[^\w\s]/g, ' ').split(/\s+/).filter(t => t.length > 0));
+    }
+
+    const scoredChunks = chunks.map(chunk => {
+        let score = 0;
+        const textLower = chunk.toLowerCase();
+        
+        const lines = chunk.split('\n');
+        const headings = lines.filter(line => line.trim().startsWith('#'));
+        const headingsText = headings.join(' ').toLowerCase();
+
+        queryTokens.forEach(token => {
+            const regex = new RegExp(token.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g');
+            const count = (textLower.match(regex) || []).length;
+            const headingCount = (headingsText.match(regex) || []).length;
+            score += count + (headingCount * 8);
+        });
+
+        const wordCount = chunk.split(/\s+/).length;
+        if (wordCount > 0) {
+            score = score / Math.sqrt(wordCount);
+        }
+
+        return { chunk, score };
+    });
+
+    return scoredChunks
+        .filter(item => item.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .map(item => item.chunk);
+}
+
 // On localhost/127.0.0.1, always bypass saved tunnels and use the local direct server to prevent stale cache blocks
 if (currentHostname === 'localhost' || currentHostname === '127.0.0.1') {
     API_BASE = `http://${currentHostname}:8000`;
@@ -26,6 +70,99 @@ if (!API_BASE) {
     // Normalize user-provided URL (remove trailing slash if exists)
     API_BASE = API_BASE.replace(/\/$/, '');
     isAutoTunnelResolved = true;
+}
+
+// Perform client-side RAG search and AI generation (or raw text fallback)
+async function clientSideRag(message, topK, temperature) {
+    console.log("Switching to Client-Side RAG Fallback...");
+    
+    // 1. Load document if not already cached
+    if (!cachedDocumentText) {
+        console.log("Loading JIET_Master_Document.md client-side...");
+        const response = await fetch('./JIET_Master_Document.md');
+        if (!response.ok) {
+            throw new Error("Unable to fetch master document from server.");
+        }
+        cachedDocumentText = await response.text();
+    }
+
+    // 2. Chunk the document by horizontal rule '---'
+    const chunks = cachedDocumentText
+        .split(/\n\s*---\s*\n/)
+        .map(c => c.trim())
+        .filter(c => c.length > 0);
+
+    // 3. Rank chunks based on query
+    const ranked = rankChunks(chunks, message);
+    if (ranked.length === 0) {
+        return {
+            answer: "I couldn't find specific information about that in the JIET Master Document. Could you try rephrasing your question?",
+            context_used: [],
+            is_genai: false
+        };
+    }
+
+    const topChunks = ranked.slice(0, topK);
+    const contextText = topChunks.join('\n\n');
+
+    // 4. If we have a Gemini API key, run generation in client browser
+    if (apiKey && apiKey.trim() !== '') {
+        console.log("Found Gemini API key. Generating answer using client-side Gemini API...");
+        const prompt = `You are the official AI assistant for Jodhpur Institute of Engineering & Technology (JIET).
+You must answer the user's question politely and professionally, using ONLY the information provided in the Context below.
+If the context doesn't contain the answer, say you don't know based on the provided document.
+Use markdown for formatting (bullet points, bold text). Keep it concise but comprehensive.
+
+Context:
+${contextText}
+
+User Question: ${message}
+`;
+
+        const cleanedKey = apiKey.replace(/[^a-zA-Z0-9_-]/g, '');
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${cleanedKey}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: prompt
+                    }]
+                }],
+                generationConfig: {
+                    temperature: temperature
+                }
+            })
+        });
+
+        if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            const errMsg = errData?.error?.message || `API error (${response.status})`;
+            throw new Error(`Gemini API Error: ${errMsg}`);
+        }
+
+        const data = await response.json();
+        if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+            const answer = data.candidates[0].content.parts[0].text;
+            return {
+                answer: answer,
+                context_used: topChunks,
+                is_genai: true
+            };
+        } else {
+            throw new Error("Invalid response format from Gemini API.");
+        }
+    } else {
+        // No Gemini API Key: return the top chunk content directly as fallback
+        console.log("No Gemini API key found. Falling back to direct Local RAG content match...");
+        return {
+            answer: topChunks[0],
+            context_used: topChunks,
+            is_genai: false
+        };
+    }
 }
 
 // Asynchronously resolve tunnel URL from backend_url.json if running on GitHub Pages
@@ -379,15 +516,41 @@ async function sendMessage(message) {
             chatContainer.appendChild(createMessageElement('Sorry, an error occurred while connecting to the server.', false));
         }
     } catch (error) {
-        console.error('Error:', error);
-        removeTypingIndicator();
-        
-        let errorMsg = 'Sorry, I am having trouble reaching the assistant server. Please check your connection and try again.';
-        if (window.location.protocol === 'https:' || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')) {
-            errorMsg = '⚠️ **Connection Error:** Browsers block secure online pages from accessing local backend servers directly. To run 100% locally with zero configuration, please open **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in a new browser tab to start chatting!';
+        console.warn('Backend server unreachable, attempting client-side RAG fallback:', error);
+        try {
+            const topK = topKSlider ? parseInt(topKSlider.value) : 4;
+            const temperature = tempSlider ? parseFloat(tempSlider.value) : 0.7;
+            const clientResult = await clientSideRag(message, topK, temperature);
+            
+            removeTypingIndicator();
+            chatContainer.appendChild(createMessageElement(clientResult.answer, false));
+            
+            // Update status badge
+            const statusBadge = document.getElementById('rag-status-badge');
+            if (statusBadge) {
+                if (clientResult.is_genai) {
+                    statusBadge.className = 'rag-status-badge active-mode';
+                    statusBadge.querySelector('.status-text').textContent = 'Client RAG + Gemini';
+                } else {
+                    statusBadge.className = 'rag-status-badge local-mode';
+                    statusBadge.querySelector('.status-text').textContent = 'Client RAG (Local)';
+                }
+            }
+            
+            if (clientResult.context_used) {
+                updateInspector(clientResult.context_used);
+            }
+        } catch (fallbackError) {
+            console.error('Client-side RAG fallback also failed:', fallbackError);
+            removeTypingIndicator();
+            
+            let errorMsg = 'Sorry, I am having trouble reaching the assistant server. Please check your connection and try again.';
+            if (window.location.protocol === 'https:' || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')) {
+                errorMsg = '⚠️ **Connection Error:** Browsers block secure online pages from accessing local backend servers directly. To run 100% locally with zero configuration, please open **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in a new browser tab to start chatting!';
+            }
+            
+            chatContainer.appendChild(createMessageElement(errorMsg, false));
         }
-        
-        chatContainer.appendChild(createMessageElement(errorMsg, false));
     } finally {
         sendBtn.disabled = false;
         userInput.focus();
