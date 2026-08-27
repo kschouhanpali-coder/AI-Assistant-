@@ -10,7 +10,7 @@ An intelligent conversational AI interface for JIET Jodhpur that provides instan
 
 ## Features ✨
 
-- **Smart Query Understanding**: Natural language processing powered by Google Gemini API
+- **Smart Query Understanding**: Ultra-fast natural language processing powered by Groq API (LLaMA 3.3 70B)
 - **RAG-Powered Responses**: Retrieval-Augmented Generation for accurate, source-backed answers
 - **Comprehensive Knowledge Base**: 
   - 📝 Admission requirements & eligibility criteria
@@ -32,18 +32,20 @@ An intelligent conversational AI interface for JIET Jodhpur that provides instan
 ## Tech Stack 🛠️
 
 - **Frontend**: HTML, CSS, JavaScript
-- **AI/LLM**: Google Gemini API
-- **Search & RAG**: Local Vector Database with semantic search
-- **Architecture**: Client-side with backend API integration
+- **AI/LLM**: Groq API (LLaMA 3.3 70B Versatile)
+- **Backend / RAG**: FastAPI, LangChain, FAISS Vector Database with semantic search
+- **Architecture**: Hybrid architecture (FastAPI Backend + Browser fallback)
 
 ## Project Structure
 
 ```
 JIET-AI-Assistant/
 ├── index.html          # Main interface
-├── styles.css          # UI styling
+├── style.css           # UI styling
 ├── script.js           # Frontend logic
-├── config.js           # API configuration
+├── main.py             # FastAPI & RAG backend
+├── run_servers.py      # Server launcher
+├── .env                # API Keys and Environment Variables
 └── README.md           # Documentation
 ```
 
@@ -51,7 +53,8 @@ JIET-AI-Assistant/
 
 ### Prerequisites
 - Modern web browser (Chrome, Firefox, Safari, Edge)
-- Google Gemini API key
+- Python 3.9+
+- Groq API key
 
 ### Installation
 
@@ -61,24 +64,26 @@ git clone https://github.com/yourusername/JIET-AI-Assistant.git
 cd JIET-AI-Assistant
 ```
 
-2. **Get API Key**
-   - Visit [Google AI Studio](https://aistudio.google.com/)
-   - Create a new API key for Gemini API
-
-3. **Configure API Key**
-   - Open the application in your browser
-   - Go to Settings panel
-   - Enter your Gemini API key
-   - The key is stored locally for your session
-
-4. **Run Locally**
+2. **Install Dependencies**
 ```bash
-# Using Python
-python -m http.server 5500
-
-# Or use any local server of your choice
-# Then navigate to: http://127.0.0.1:5500/index.html
+pip install -r requirements.txt
 ```
+
+3. **Get API Key & Configure .env**
+   - Visit [Groq Console](https://console.groq.com/keys)
+   - Create a free API key
+   - Add your key to the `.env` file:
+```env
+GROQ_API_KEY=gsk_your_groq_api_key_here
+```
+
+4. **Run Backend & Application**
+```bash
+python run_servers.py
+```
+Then navigate to: **http://127.0.0.1:8000/**
+
+---
 
 ## Usage 📖
 
@@ -131,25 +136,19 @@ Monitor retrieved context in real-time:
 - Website: [jiet.ac.in](https://jiet.ac.in)
 - Email: admissions@jiet.ac.in
 
-## Screenshots 📸
-
-![JIET AI Assistant - Main Interface](./screenshot1.png)
-![RAG Settings & Query Response](./screenshot2.png)
-![Admission Details Retrieval](./screenshot3.png)
-
 ## How RAG Works 🔍
 
 1. **Indexing**: JIET knowledge base is converted into vector embeddings
 2. **Retrieval**: User query is matched against indexed content using semantic search
 3. **Augmentation**: Top-K relevant documents are retrieved based on similarity
-4. **Generation**: Gemini AI generates contextual response using retrieved documents
+4. **Generation**: Groq AI generates contextual response using retrieved documents
 5. **Source Display**: Original sources are displayed for verification
 
 ## API Configuration 🔑
 
 The application uses:
-- **Gemini API**: For natural language understanding and generation
-- **Local Vector DB**: For semantic search and document retrieval
+- **Groq API**: For ultra-fast natural language understanding and generation (configured via `.env` or UI)
+- **FAISS Vector DB**: For semantic search and document retrieval
 
 No backend server required - runs entirely client-side with API calls.
 
