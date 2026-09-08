@@ -17,7 +17,6 @@
 [![LangChain](https://img.shields.io/badge/LangChain-RAG_Pipeline-1C3C3C?style=flat-square)](https://www.langchain.com/)
 [![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-4B8BBE?style=flat-square)](https://github.com/facebookresearch/faiss)
 [![Groq](https://img.shields.io/badge/Groq-LLaMA_3.3_70B-F55036?style=flat-square)](https://groq.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
 </div>
 
@@ -39,7 +38,6 @@
 - [Project Structure](#project-structure)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
-- [License & Disclaimer](#license--disclaimer)
 - [Support](#support)
 
 <br/>
@@ -297,14 +295,6 @@ Contributions are welcome.
 3. Commit your changes — `git commit -m 'Add AmazingFeature'`
 4. Push the branch — `git push origin feature/AmazingFeature`
 5. Open a pull request
-
-<br/>
-
-## License & Disclaimer
-
-Licensed under the MIT License (see LICENSE).
-
-> This is an unofficial, independently built AI assistant for JIET Jodhpur. For official information, visit jiet.ac.in or contact the admissions office directly.
 
 <br/>
 
