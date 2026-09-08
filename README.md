@@ -1,127 +1,129 @@
 <div align="center">
 
-# 🤖 JIET AI Assistant
+<img src="https://img.shields.io/badge/🤖-JIET_AI_Assistant-6C5CE7?style=for-the-badge&labelColor=2D3436" alt="JIET AI Assistant" height="60"/>
 
-**Instant answers about admissions, placements, courses, and campus life.**
+### Instant, source-backed answers about admissions, placements, courses & campus life
 
-An intelligent conversational AI interface for JIET Jodhpur, powered by Retrieval-Augmented Generation (RAG) to deliver accurate, source-backed answers to student and applicant questions.
+*A Retrieval-Augmented Generation (RAG) assistant built for JIET Jodhpur — no more digging through PDFs.*
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Try_Now-00C7B7?style=for-the-badge)](https://jietassistant.netlify.app)
-![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat-square&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=flat-square)
-![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-4B8BBE?style=flat-square)
-![Groq](https://img.shields.io/badge/Groq-LLaMA_3.3_70B-F55036?style=flat-square)
+<br/>
 
-</div>
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Try_it_now-00C7B7?style=for-the-badge)](https://jietassistant.netlify.app)
 
----
+<br/>
 
-## 📖 Table of Contents
-
-- [Overview](#-overview)
-- [Live Demo](#-live-demo)
-- [Features](#-features)
-- [How RAG Works](#-how-rag-works)
-- [Tech Stack](#️-tech-stack)
-- [Getting Started](#-getting-started)
-- [Usage](#-usage)
-- [Key Information](#-key-information)
-- [Performance Tips](#-performance-tips)
-- [Troubleshooting](#-troubleshooting)
-- [Browser Compatibility](#-browser-compatibility)
-- [Project Structure](#-project-structure)
-- [Future Enhancements](#-future-enhancements)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Disclaimer](#️-disclaimer)
-- [Support](#-support)
-
----
-
-## 🎯 Overview
-
-**JIET AI Assistant** gives prospective and current students a fast, conversational way to get information about JIET Jodhpur — instead of digging through PDFs and web pages. Every answer is grounded in a real knowledge base through RAG, so responses come with source references rather than generic AI guesses, covering everything from admission eligibility to placement statistics to campus facilities.
-
----
-
-## 🌐 Live Demo
-
-<div align="center">
-
-### 👉 [**Try JIET AI Assistant Now**](https://jietassistant.netlify.app)
-
-*Runs live in your browser — no installation required.*
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![LangChain](https://img.shields.io/badge/LangChain-RAG_Pipeline-1C3C3C?style=flat-square)](https://www.langchain.com/)
+[![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-4B8BBE?style=flat-square)](https://github.com/facebookresearch/faiss)
+[![Groq](https://img.shields.io/badge/Groq-LLaMA_3.3_70B-F55036?style=flat-square)](https://groq.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
 </div>
 
----
+<br/>
 
-## ✨ Features
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [How It Works](#how-it-works)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Usage Guide](#usage-guide)
+- [Configuration Reference](#configuration-reference)
+- [Program Information](#program-information)
+- [Performance Tuning](#performance-tuning)
+- [Troubleshooting](#troubleshooting)
+- [Browser Support](#browser-support)
+- [Project Structure](#project-structure)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License & Disclaimer](#license--disclaimer)
+- [Support](#support)
+
+<br/>
+
+## Overview
+
+**JIET AI Assistant** is a conversational interface that gives prospective and current students a fast way to get accurate information about **JIET Jodhpur** — admissions, eligibility, placements, courses, and campus facilities — without searching through scattered PDFs and web pages.
+
+Every response is grounded in a real knowledge base via **Retrieval-Augmented Generation (RAG)**, so answers come with cited sources rather than generic AI guesses.
+
+> **[Try the live demo →](https://jietassistant.netlify.app)** — runs entirely in your browser, no installation required.
+
+<br/>
+
+## Features
 
 <table>
 <tr>
-<td valign="top" width="50%">
+<td width="50%" valign="top">
 
-### 🧠 Intelligence
-- **Smart Query Understanding** — ultra-fast NLP powered by Groq (LLaMA 3.3 70B)
-- **RAG-Powered Responses** — accurate, source-backed answers via retrieval-augmented generation
-- **Source Tracking** — view retrieved context and source documents
-- **Real-time Responses** — instant query processing with a clean UI
+### Intelligence
+- Smart query understanding powered by Groq's LLaMA 3.3 70B for near-instant NLP
+- RAG-grounded responses — every answer traces back to real source content
+- Transparent sourcing — inspect the retrieved context behind any answer
+- Real-time chat with a clean, responsive UI
 
 </td>
-<td valign="top" width="50%">
+<td width="50%" valign="top">
 
-### 📚 Knowledge Base
+### Knowledge Coverage
 - Admission requirements & eligibility criteria
-- Placement statistics & career opportunities
-- Undergraduate & postgraduate programs (B.Tech, M.Tech, MBA, MCA, PhD)
-- Campus facilities & infrastructure details
-- Course specializations across 8+ academic streams
+- Placement statistics & career outcomes
+- UG & PG programs — B.Tech, M.Tech, MBA, MCA, PhD
+- Campus facilities & infrastructure
+- 8+ academic streams and specializations
 
 </td>
 </tr>
 </table>
 
-### ⚙️ Configurable RAG Parameters
+### Configurable RAG Parameters
 
 | Parameter | Purpose |
 |---|---|
-| **Top-K Sources** | Adjustable relevance filtering |
-| **Temperature** | Control response creativity (0–1 scale) |
-| **Chunk Size** | Optimize text segmentation |
-| **Chunk Overlap** | Fine-tune context retention |
-| **Vector DB Rebuilding** | Manual index updates |
+| **Top-K Sources** | Controls how many relevant documents are retrieved |
+| **Temperature** | Balances factual precision vs. response creativity |
+| **Chunk Size** | Optimizes how source text is segmented for indexing |
+| **Chunk Overlap** | Preserves context continuity between chunks |
+| **Vector DB Rebuild** | Manually refresh the index with updated content |
 
----
+<br/>
 
-## 🔍 How RAG Works
+## How It Works
 
-1. **Indexing** — the JIET knowledge base is converted into vector embeddings
-2. **Retrieval** — the user query is matched against indexed content using semantic search
-3. **Augmentation** — the top-K most relevant documents are retrieved based on similarity
-4. **Generation** — Groq generates a contextual response using the retrieved documents
-5. **Source Display** — original sources are displayed for verification
+```
+1. Indexing        Knowledge base is embedded into a vector store
+2. Retrieval        User query is matched via semantic search
+3. Augmentation     Top-K most relevant documents are pulled in
+4. Generation       Groq (LLaMA 3.3 70B) generates a grounded response
+5. Source Display   Original sources are surfaced for verification
+```
 
----
+<br/>
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
 | **Frontend** | HTML, CSS, JavaScript |
-| **AI / LLM** | Groq API (LLaMA 3.3 70B Versatile) |
-| **Backend / RAG** | FastAPI, LangChain, FAISS Vector Database with semantic search |
-| **Architecture** | Hybrid (FastAPI backend + browser fallback) |
+| **AI / LLM** | Groq API — LLaMA 3.3 70B Versatile |
+| **Backend / RAG** | FastAPI, LangChain, FAISS vector database |
+| **Architecture** | Hybrid — FastAPI backend with browser-side fallback |
 
----
+<br/>
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
-- A modern web browser (Chrome, Firefox, Safari, Edge)
+
 - Python 3.9+
-- Groq API key
+- A modern browser (Chrome, Firefox, Safari, or Edge)
+- A free Groq API key (console.groq.com/keys)
+
+### Installation
 
 **1. Clone the repository**
 ```bash
@@ -134,111 +136,122 @@ cd JIET-AI-Assistant
 pip install -r requirements.txt
 ```
 
-**3. Get an API key and configure `.env`**
+**3. Configure your environment**
 
-Visit the [Groq Console](https://console.groq.com/keys), create a free API key, and add it to your `.env` file:
+Create a `.env` file in the project root:
 ```env
 GROQ_API_KEY=gsk_your_groq_api_key_here
 ```
 
-**4. Run the backend and application**
+**4. Launch the app**
 ```bash
 python run_servers.py
 ```
 
-Then navigate to **http://127.0.0.1:8000/** 🚀
+Then open **http://127.0.0.1:8000/** in your browser.
 
----
+<br/>
 
-## 📖 Usage
+## Usage Guide
 
-### Basic Query
+### Asking a Question
 
 | Step | Action |
 |---|---|
-| 1️⃣ | Type your question in the input field |
-| 2️⃣ | Press Enter or click the send button |
-| 3️⃣ | Receive an AI-powered response with source references |
+| 1 | Type your question into the chat input |
+| 2 | Press Enter or click send |
+| 3 | Receive an AI-generated answer with cited sources |
 
 ### Example Queries
-- *"What are the admission requirements for B.Tech?"*
-- *"Tell me about placement statistics"*
-- *"What courses are offered in CSE?"*
-- *"What is the duration of M.Tech programs?"*
 
-### RAG Settings
-Access **RAG Settings** in the sidebar to fine-tune:
-- **Top-K (Sources)** — number of relevant sources to retrieve (1–10)
-- **Temperature** — response creativity level (0.0 = deterministic, 1.0 = creative)
-- **Chunk Size** — text segment size for the vector database (256–2048 tokens)
-- **Chunk Overlap** — overlap between chunks for context continuity
+- "What are the admission requirements for B.Tech?"
+- "Tell me about placement statistics."
+- "What courses are offered in CSE?"
+- "What is the duration of M.Tech programs?"
 
 ### RAG Inspector
-Monitor retrieved context in real time:
-- View source documents used for responses
+
+Use the sidebar's RAG Settings panel to monitor and fine-tune retrieval in real time:
+- View the source documents behind each response
 - Track retrieval relevance scores
-- Verify information sources
+- Cross-check the information sources
 
----
+<br/>
 
-## 📚 Key Information
+## Configuration Reference
+
+| Setting | Range | Recommended | Effect |
+|---|---|---|---|
+| Top-K Sources | 1–10 | 3–5 | Higher = broader context, slower response |
+| Temperature | 0.0–1.0 | 0.2–0.4 | Lower = more deterministic, factual answers |
+| Chunk Size | 256–2048 tokens | 512 | Larger = more context per chunk |
+| Chunk Overlap | — | 10–20% of chunk size | Improves continuity across chunk boundaries |
+
+<br/>
+
+## Program Information
 
 ### Programs Offered
-| Level | Programs |
-|---|---|
-| **Undergraduate** | B.Tech (4 years) |
-| **Postgraduate** | M.Tech, MBA, MCA (2 years each) |
-| **Doctoral** | PhD programs |
-| **Professional** | Diplomas in various fields |
+
+| Level | Programs | Duration |
+|---|---|---|
+| Undergraduate | B.Tech | 4 years |
+| Postgraduate | M.Tech, MBA, MCA | 2 years |
+| Doctoral | PhD | Variable |
+| Professional | Diplomas in various fields | Varies |
 
 ### Specializations
-`Computer Science & Engineering (CSE)` · `CSE with AI/ML` · `Cyber Security` · `Electronics & Communication Engineering (ECE)` · `Electrical Engineering` · `Mechanical Engineering` · `Civil Engineering` · `Data Science` · `Cloud Computing` · `IoT` · and more
 
-### Contact
+Computer Science & Engineering (CSE), CSE with AI/ML, Cyber Security, Electronics & Communication Engineering (ECE), Electrical Engineering, Mechanical Engineering, Civil Engineering, Data Science, Cloud Computing, IoT, and more
+
+### Official Contact
+
 **JIET Jodhpur**
-- 🌐 Website: [jiet.ac.in](https://jiet.ac.in)
-- 📧 Email: admissions@jiet.ac.in
+Website: jiet.ac.in — Email: admissions@jiet.ac.in
 
----
+<br/>
 
-## ⚡ Performance Tips
+## Performance Tuning
 
-- Adjust **Top-K** to balance speed vs. relevance
-- Lower **Temperature** for factual consistency
-- Rebuild the Vector DB periodically for updated information
-- Clear your browser cache if experiencing issues
+- Lower Top-K for faster responses; raise it for broader coverage
+- Lower Temperature for more consistent, factual answers
+- Rebuild the vector database periodically to reflect updated content
+- Clear your browser cache if the UI behaves unexpectedly
 
----
+<br/>
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 <details>
-<summary><strong>API Key Not Working</strong></summary>
+<summary><strong>API key not working</strong></summary>
+<br/>
 
-- Verify the key is valid from your Groq Console
-- Check the browser console for error messages
-- Ensure the API is enabled on your account
+- Confirm the key is valid in your Groq Console
+- Check the browser console for error output
+- Make sure the API is enabled on your Groq account
 </details>
 
 <details>
-<summary><strong>No Results Retrieved</strong></summary>
+<summary><strong>No results retrieved</strong></summary>
+<br/>
 
-- Try rephrasing your question
+- Rephrase your question
 - Increase Top-K sources in RAG settings
-- Rebuild the Vector Database from settings
+- Rebuild the vector database from settings
 </details>
 
 <details>
-<summary><strong>Slow Responses</strong></summary>
+<summary><strong>Slow responses</strong></summary>
+<br/>
 
-- Reduce Chunk Size
+- Reduce chunk size
 - Decrease Top-K sources
 - Check your internet connection
 </details>
 
----
+<br/>
 
-## ✅ Browser Compatibility
+## Browser Support
 
 | Browser | Minimum Version |
 |---|---|
@@ -247,62 +260,56 @@ Monitor retrieved context in real time:
 | Safari | 14+ |
 | Edge | 90+ |
 
----
+<br/>
 
-## 📁 Project Structure
+## Project Structure
 
-```bash
+```
 JIET-AI-Assistant/
-├── index.html          # Main interface
-├── style.css           # UI styling
-├── script.js           # Frontend logic
-├── main.py             # FastAPI & RAG backend
-├── run_servers.py      # Server launcher
-├── .env                # API keys and environment variables
+├── index.html          Main chat interface
+├── style.css            UI styling
+├── script.js            Frontend logic
+├── main.py               FastAPI & RAG backend
+├── run_servers.py        Server launcher
+├── .env                   API keys & environment variables
 └── README.md
 ```
 
----
+<br/>
 
-## 🎯 Future Enhancements
+## Roadmap
 
-- [ ] Backend server integration
-- [ ] Database persistence
+- [ ] Persistent backend database
 - [ ] Multi-language support
 - [ ] Advanced analytics dashboard
-- [ ] Export conversation history
+- [ ] Conversation history export
 - [ ] Voice input/output
 - [ ] Mobile app version
 
----
+<br/>
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! Please feel free to submit a pull request.
+Contributions are welcome.
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create a feature branch — `git checkout -b feature/AmazingFeature`
+3. Commit your changes — `git commit -m 'Add AmazingFeature'`
+4. Push the branch — `git push origin feature/AmazingFeature`
 5. Open a pull request
 
----
+<br/>
 
-## 📄 License
+## License & Disclaimer
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+Licensed under the MIT License (see LICENSE).
 
----
+> This is an unofficial, independently built AI assistant for JIET Jodhpur. For official information, visit jiet.ac.in or contact the admissions office directly.
 
-## ⚠️ Disclaimer
+<br/>
 
-This is an unofficial AI assistant for JIET Jodhpur. For official information, please visit [jiet.ac.in](https://jiet.ac.in) or contact the admissions office directly.
+## Support
 
----
-
-## 💬 Support
-
-For issues, questions, or suggestions:
-- Open a GitHub Issue
-- Check existing documentation
-- Contact the repository maintainer
+- Open a GitHub Issue for bugs or feature requests
+- Check the documentation above before filing a new issue
+- Reach out to the repository maintainer for anything else
