@@ -1,16 +1,17 @@
 <div align="center" id="top">
 
-# ✨ Your Project Name
+# 🤖 JIET AI Assistant
 
-**Your catchy tagline here.**
+**Instant, source-backed answers about admissions, placements, courses & campus life.**
 
-An AI-powered platform that [does something amazing] — instantly.
+A Retrieval-Augmented Generation (RAG) assistant built for JIET Jodhpur — no more digging through PDFs.
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Netlify-9D4EDD?style=for-the-badge)](https://your-demo-url.com)
-![Technology1](https://img.shields.io/badge/Technology1-61DAFB?style=flat-square&logo=tech1&logoColor=black)
-![Technology2](https://img.shields.io/badge/Technology2-646CFF?style=flat-square&logo=tech2&logoColor=white)
-![Technology3](https://img.shields.io/badge/Technology3-06B6D4?style=flat-square&logo=tech3&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Try_it_now-00C7B7?style=for-the-badge)](https://jietassistant.netlify.app)
+![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi&logoColor=white)
+![LangChain](https://img.shields.io/badge/LangChain-RAG_Pipeline-1C3C3C?style=flat-square)
+![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-4B8BBE?style=flat-square)
+![Groq](https://img.shields.io/badge/Groq-LLaMA_3.3_70B-F55036?style=flat-square)
 ![Status](https://img.shields.io/badge/status-active-brightgreen?style=flat-square)
 
 </div>
@@ -22,29 +23,29 @@ An AI-powered platform that [does something amazing] — instantly.
 - [Overview](#-overview)
 - [Live Demo](#-live-demo)
 - [Features](#-features)
+- [How It Works](#️-how-it-works)
 - [Architecture](#️-architecture)
-- [Core Components](#-core-components)
+- [Tech Stack](#️-tech-stack)
 - [Getting Started](#-getting-started)
-- [Usage](#-usage)
-- [System Configuration](#-system-configuration)
-- [Performance Metrics](#-performance-metrics)
+- [Usage Guide](#-usage-guide)
+- [Configuration Reference](#-configuration-reference)
+- [Program Information](#-program-information)
+- [Performance Tuning](#-performance-tuning)
 - [Project Structure](#-project-structure)
-- [Technologies Used](#️-technologies-used)
-- [Security & Privacy](#-security--privacy)
-- [Deployment](#️-deployment)
-- [Best Use Cases](#-best-use-cases)
+- [Browser Support](#-browser-support)
+- [Troubleshooting](#-troubleshooting)
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
 - [FAQ](#-faq)
-- [Credits & Contact](#-credits--contact)
+- [Credits & Support](#-credits--support)
 
 ---
 
 ## 📋 Overview
 
-**Your Project Name** lets users [describe the main action] and [achieve the desired outcome] using state-of-the-art [technology/AI/framework]. With [key feature], [another feature], and [third feature], it [main value proposition] in seconds.
+**JIET AI Assistant** is a conversational interface that gives prospective and current students a fast way to get accurate information about **JIET Jodhpur** — admissions, eligibility, placements, courses, and campus facilities — without searching through scattered PDFs and web pages.
 
-The platform routes each [input] through a **[selectable component/engine]**, with [enhancement layer] and [customization layer] layered on top so results stay [quality descriptors].
+Every response is grounded in a real knowledge base via **Retrieval-Augmented Generation (RAG)**, so answers come with cited sources rather than generic AI guesses.
 
 ---
 
@@ -52,7 +53,7 @@ The platform routes each [input] through a **[selectable component/engine]**, wi
 
 <div align="center">
 
-### 👉 [**Launch Your Project**](https://your-demo-url.com)
+### 👉 [**Chat with JIET AI Assistant**](https://jietassistant.netlify.app)
 
 *Runs live in your browser — no installation required.*
 
@@ -66,20 +67,23 @@ The platform routes each [input] through a **[selectable component/engine]**, wi
 <tr>
 <td valign="top" width="50%">
 
-### 🎨 Creation Tools
-- **Instant Inspiration [Feature]** — one-click starters (Example 1, Example 2, Example 3, and more)
-- **[Customization Feature]** — [describe curated options]
-- **[Enhancement Tool]** — "[describe benefit]" for AI-optimized [refinement]
-- **[Configuration Option]** — [describe custom settings]
+### 🧠 Intelligence
+- **Smart Query Understanding** — powered by Groq's LLaMA 3.3 70B for near-instant NLP
+- **RAG-Grounded Responses** — every answer traces back to real source content
+- **Transparent Sourcing** — inspect the retrieved context behind any answer
+- **Real-time Chat** — clean, responsive conversational UI
+- **Semantic Search** — matches queries to most relevant knowledge base documents
 
 </td>
 <td valign="top" width="50%">
 
-### 🖼️ Output & Management
-- **Multiple [Engines/Options]** — choose the [component] that fits your [needs]
-- **Ultra-[Quality] Output** — one-click generation of [high-quality] outputs
-- **[Gallery/Results Viewer]** — view, revisit, and manage previously [created items]
-- **[Status Tracking]** — live [progress tracking] while [operation] runs
+### 📚 Knowledge Coverage
+- **Admission requirements & eligibility criteria**
+- **Placement statistics & career outcomes**
+- **UG & PG Programs** — B.Tech, M.Tech, MBA, MCA, PhD
+- **Campus facilities & infrastructure**
+- **8+ academic streams and specializations**
+- **Student life & campus amenities**
 
 </td>
 </tr>
@@ -87,288 +91,348 @@ The platform routes each [input] through a **[selectable component/engine]**, wi
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ How It Works
+
+```
+1. Indexing        Knowledge base is embedded into a vector store
+2. Retrieval       User query is matched via semantic search
+3. Augmentation    Top-K most relevant documents are pulled in
+4. Generation      Groq (LLaMA 3.3 70B) generates a grounded response
+5. Source Display  Original sources are surfaced for verification
+```
+
+---
+
+## 🎯 Architecture
 
 ### Core Components
 
 | Component | Description |
 |---|---|
-| **[Component 1]** | [What it does and why it matters] |
-| **[Component 2]** | [What it does and why it matters] |
-| **[Component 3]** | [What it does and why it matters] |
-| **[Component 4]** | [What it does and why it matters] |
+| **Query Interface** | Clean chat input accepting natural language questions |
+| **Vector Indexer** | FAISS vector store embedding knowledge base content |
+| **Semantic Retriever** | Matches queries to relevant documents via similarity search |
+| **RAG Pipeline** | LangChain orchestration combining retrieval + generation |
+| **LLM Engine** | Groq API (LLaMA 3.3 70B) for response generation |
+| **Source Display** | Shows retrieved documents for transparency & verification |
 
 ### System Integration
 
 | Layer | Technology |
 |---|---|
-| **Primary [System]** | [Primary Technology/Engine] |
-| **Speed [System]** | [Speed-optimized Option] |
-| **Alternate [System]** | [Alternative Option] |
-| **Framework** | [Frontend Framework], [Backend Technology] |
+| **Frontend** | HTML, CSS, JavaScript |
+| **AI / LLM** | Groq API — LLaMA 3.3 70B Versatile |
+| **Backend / RAG** | FastAPI, LangChain, FAISS vector database |
+| **Architecture** | Hybrid — FastAPI backend with browser-side fallback |
 
 ---
 
-## ⚡ Core Components
+## 🛠️ Tech Stack
 
-| Component | Description |
+| Category | Technology |
 |---|---|
-| **[Option 1]** ⭐ | [Description] — *recommended* |
-| **[Option 2]** | [Description] |
-| **[Option 3]** | [Description] |
-
-> Each [component] trades off [attribute A] against [attribute B] — switch anytime from the [panel/settings].
+| **Web Framework** | FastAPI + HTML/CSS/JS |
+| **LLM & NLP** | Groq (LLaMA 3.3 70B) |
+| **RAG Pipeline** | LangChain |
+| **Vector Database** | FAISS |
+| **Server** | Python 3.9+ |
+| **Deployment** | Netlify |
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- [Requirement 1] installed
-- [Requirement 2] (e.g., API credentials, account)
-- [Requirement 3] (e.g., internet, specific OS)
+
+- **Python 3.9+** installed
+- A modern browser (Chrome 90+, Firefox 88+, Safari 14+, or Edge 90+)
+- A **free Groq API key** from [console.groq.com/keys](https://console.groq.com/keys)
 - Internet connection
 
 ### Installation
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/your-username/your-project.git
-cd your-project
+git clone https://github.com/yourusername/JIET-AI-Assistant.git
+cd JIET-AI-Assistant
 ```
 
 **2. Install dependencies**
 ```bash
-npm install
+pip install -r requirements.txt
 ```
 
 **3. Set up environment variables**
 
-See `.env.example` for required variables.
-
-**4. Run the development server**
-```bash
-npm run dev
+Create a `.env` file in the project root:
+```env
+GROQ_API_KEY=gsk_your_groq_api_key_here
 ```
 
-### Running the Application
+> Get your free API key at [console.groq.com/keys](https://console.groq.com/keys)
 
-Visit `http://localhost:3000` in your browser ✨
+**4. Launch the application**
+```bash
+python run_servers.py
+```
 
----
-
-## 📖 Usage
-
-### Performing the Main Action
-1. [First step to accomplish main task]
-2. (Optional) [Optional enhancement step]
-3. Pick a **[configuration option]** and set your [parameters]
-4. Choose your **[engine/option]** and execute
-
-### System Configuration
-1. Open **Settings**
-2. [Add or update] your [required credentials/options]
-3. Save configuration for persistent access
-
-### Results Viewer
-- Browse previously [created items] in full [resolution/detail]
-- Revisit past [inputs] and [settings]
-- Track [in-progress] jobs via live [status/polling]
+Then open **http://127.0.0.1:8000/** in your browser ✨
 
 ---
 
-## 🔧 System Configuration
+## 📖 Usage Guide
 
-### [Option 1: Primary]
-The recommended [option] for [use case].
-- **Benefits:** [benefit 1], [benefit 2]
-- **Best for:** [ideal scenario]
+### Asking a Question
 
-### [Option 2: Speed]
-Optimized for [speed attribute] without sacrificing [quality attribute].
-- **Benefits:** [benefit 1], [benefit 2]
-- **Best for:** [ideal scenario]
-
-### [Option 3: Alternative]
-A [descriptor] alternative for [use case].
-- **Benefits:** [benefit 1], [benefit 2]
-- **Best for:** [ideal scenario]
-
----
-
-## 📊 Performance Metrics
-
-| Metric | Value |
+| Step | Action |
 |---|---|
-| **[Engines/Options] Available** | [Number] |
-| **Max Output [Quality/Size]** | [Value] |
-| **Recommended [Component]** | [Recommendation] |
-| **[Tracking Feature]** | [Real-time capability] |
+| 1️⃣ | Type your question into the chat input |
+| 2️⃣ | Press Enter or click the send button |
+| 3️⃣ | Receive an AI-generated answer with cited sources |
+
+### Example Queries
+
+- "What are the admission requirements for B.Tech?"
+- "Tell me about placement statistics for CSE graduates."
+- "What courses are offered in Computer Science Engineering?"
+- "What is the duration of M.Tech programs?"
+- "How many specializations are available?"
+- "What are the campus facilities?"
+
+### RAG Settings Inspector
+
+Use the sidebar's **RAG Settings** panel to monitor and fine-tune retrieval in real time:
+
+- 📄 **View Source Documents** — see the context behind each response
+- 📊 **Track Relevance Scores** — monitor how relevant retrieved documents are
+- ⚙️ **Adjust Parameters** — customize Top-K, Temperature, and Chunk settings
+- 🔄 **Rebuild Vector DB** — refresh the index with updated content
+
+---
+
+## 🔧 Configuration Reference
+
+### RAG Parameters
+
+| Setting | Range | Recommended | Effect |
+|---|---|---|---|
+| **Top-K Sources** | 1–10 | 3–5 | Higher = broader context, slower response |
+| **Temperature** | 0.0–1.0 | 0.2–0.4 | Lower = more deterministic, factual answers |
+| **Chunk Size** | 256–2048 tokens | 512 | Larger = more context per chunk |
+| **Chunk Overlap** | — | 10–20% of chunk size | Improves continuity across chunk boundaries |
+| **Vector DB Rebuild** | Manual trigger | On-demand | Refresh index with latest content |
+
+---
+
+## 📚 Program Information
+
+### Programs Offered
+
+| Level | Programs | Duration |
+|---|---|---|
+| **Undergraduate** | B.Tech | 4 years |
+| **Postgraduate** | M.Tech, MBA, MCA | 2 years |
+| **Doctoral** | PhD | Variable |
+| **Professional** | Diplomas (various fields) | Varies |
+
+### Academic Specializations
+
+**Engineering:** Computer Science & Engineering (CSE), CSE with AI/ML, Cyber Security, Electronics & Communication Engineering (ECE), Electrical Engineering, Mechanical Engineering, Civil Engineering
+
+**Emerging Fields:** Data Science, Cloud Computing, IoT, Artificial Intelligence, Machine Learning, and more
+
+### Official Contact
+
+**JIET Jodhpur**
+- 🌐 Website: [jiet.ac.in](https://jiet.ac.in)
+- 📧 Email: [admissions@jiet.ac.in](mailto:admissions@jiet.ac.in)
+
+---
+
+## ⚡ Performance Tuning
+
+| Action | Benefit |
+|---|---|
+| Lower Top-K sources | Faster responses, focused answers |
+| Raise Top-K sources | Broader context, more comprehensive answers |
+| Lower Temperature | More consistent, factual answers |
+| Higher Temperature | More creative, varied responses |
+| Smaller Chunk Size | Faster processing, focused context |
+| Larger Chunk Size | More detailed context per chunk |
+| Periodic DB Rebuild | Fresh, up-to-date knowledge base |
 
 ---
 
 ## 📁 Project Structure
 
 ```bash
-frontend/
-├── src/
-│   ├── api/               # API client
-│   ├── components/        # UI components
-│   ├── hooks/             # Custom hooks
-│   ├── styles/            # Global styles
-│   ├── App.jsx
-│   └── main.jsx
-├── public/
-└── index.html
-
-server/                     # Backend API server
-uploads/                    # Generated media storage
+JIET-AI-Assistant/
+├── index.html              # Main chat interface
+├── style.css               # UI styling & responsive design
+├── script.js               # Frontend logic & interactions
+├── main.py                 # FastAPI & RAG backend
+├── run_servers.py          # Application launcher
+├── requirements.txt        # Python dependencies
+├── .env                    # API keys & configuration
+├── uploads/                # Generated content storage
+└── README.md               # Documentation
 ```
 
 ---
 
-## 🛠️ Technologies Used
+## 🌐 Browser Support
 
-| Category | Technology |
+| Browser | Minimum Version |
 |---|---|
-| **Frontend** | React (Vite), Tailwind CSS |
-| **Backend** | Node.js / Express |
-| **Database** | [Your DB choice] |
-| **[Key Feature]** | [Technology/Framework] |
-| **Deployment** | Netlify / Vercel / Other |
-
-### Dependencies
-```
-react
-vite
-tailwindcss
-express
-dotenv
-node-fetch
-[your dependencies here]
-```
-
-Install all dependencies:
-```bash
-npm install
-```
+| **Chrome** | 90+ |
+| **Firefox** | 88+ |
+| **Safari** | 14+ |
+| **Edge** | 90+ |
 
 ---
 
-## 🔒 Security & Privacy
+## 🐛 Troubleshooting
 
-- API keys are stored locally in the `.env` file
-- The `.env` file should never be committed to version control
-- [Generated items] are stored in the local `uploads/` directory
-- Sensitive data is managed through environment variables
-- [Additional security measures]
+<details>
+<summary><strong>❌ API key not working</strong></summary>
+<br/>
 
----
+**Solutions:**
+- Verify the API key in your [Groq Console](https://console.groq.com/keys)
+- Check the browser console (F12 → Console tab) for error messages
+- Ensure the Groq API is enabled on your account
+- Try generating a new API key
 
-## ☁️ Deployment
+</details>
 
-### Netlify (Recommended)
-1. Push your code to GitHub
-2. Connect the repo to Netlify
-3. Add required environment variables in the Netlify dashboard
-4. Deploy automatically
+<details>
+<summary><strong>❌ No results retrieved</strong></summary>
+<br/>
 
-### Vercel
-```bash
-npm run build
-vercel
-```
+**Solutions:**
+- Rephrase your question in different words
+- Increase **Top-K sources** in RAG settings (try 5–7)
+- **Rebuild the vector database** from settings panel
+- Check that knowledge base documents are properly indexed
 
-### Traditional Server
-```bash
-npm run dev
-```
+</details>
 
----
+<details>
+<summary><strong>❌ Slow responses</strong></summary>
+<br/>
 
-## 💡 Best Use Cases
+**Solutions:**
+- Reduce **Chunk Size** to 256–384
+- Decrease **Top-K sources** to 3
+- Check your internet connection speed
+- Try during off-peak hours (less server load)
 
-1. **[Use Case 1]** — [description]
-2. **[Use Case 2]** — [description]
-3. **[Use Case 3]** — [description]
-4. **[Use Case 4]** — [description]
-5. **[Use Case 5]** — [description]
+</details>
+
+<details>
+<summary><strong>❌ Chat not responding</strong></summary>
+<br/>
+
+**Solutions:**
+- Clear your browser cache (Ctrl+Shift+Del)
+- Refresh the page (Ctrl+R or Cmd+R)
+- Check browser console for JavaScript errors
+- Restart the Python server (`python run_servers.py`)
+
+</details>
 
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] [Feature or improvement #1]
-- [ ] [Feature or improvement #2]
-- [ ] [Feature or improvement #3]
-- [ ] [Feature or improvement #4]
-- [ ] [Feature or improvement #5]
-- [ ] [Feature or improvement #6]
+- [ ] Persistent backend database for conversation history
+- [ ] Multi-language support (Hindi, regional languages)
+- [ ] Advanced analytics dashboard for admissions insights
+- [ ] Conversation history export (PDF, CSV)
+- [ ] Voice input/output (speech-to-text, text-to-speech)
+- [ ] Mobile app version (iOS & Android)
+- [ ] Integration with JIET's official systems
+- [ ] Custom chatbot for departments/faculty
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please:
+Contributions are welcome! Please follow these steps:
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a pull request
+1. **Fork** the repository on GitHub
+2. **Create a feature branch** — `git checkout -b feature/AmazingFeature`
+3. **Make your changes** and test thoroughly
+4. **Commit clearly** — `git commit -m 'Add AmazingFeature'`
+5. **Push to branch** — `git push origin feature/AmazingFeature`
+6. **Open a Pull Request** with clear description
+
+### Areas for Contribution
+
+- 📚 Expanding the knowledge base
+- 🐛 Bug fixes and optimizations
+- 💡 New features or improvements
+- 📖 Documentation improvements
+- 🌍 Translation support
 
 ---
 
 ## ❓ FAQ
 
-**[Common Question #1]**
-[Answer with details]
+**Q: Can I use this for other institutions?**
+A: Yes! The architecture is generic and works with any institution's knowledge base. Clone the repo and update the knowledge base documents.
 
-**[Common Question #2]**
-[Answer with details]
+**Q: How much does it cost to run?**
+A: The Groq API tier is free with a usage limit. Check [console.groq.com](https://console.groq.com) for current pricing.
 
-**[Common Question #3]**
-[Answer with details]
+**Q: Can I add custom documents to the knowledge base?**
+A: Yes! Add PDF/text files to the knowledge base directory and rebuild the vector database from settings.
 
-**[Common Question #4]**
-[Answer with details]
+**Q: How accurate are the responses?**
+A: Accuracy depends on the knowledge base quality. Responses are grounded in real documents and cite sources for verification.
 
-**[Common Question #5]**
-[Answer with details]
+**Q: Can I deploy this on my own server?**
+A: Yes! You can deploy the FastAPI backend on any server (AWS, Azure, DigitalOcean, etc.) and the frontend on Netlify or your own hosting.
+
+**Q: What if the knowledge base is outdated?**
+A: Update the source documents and click **Rebuild Vector Database** in RAG Settings to refresh the index.
+
+**Q: Is user data saved?**
+A: No. By default, conversations are not persisted. See the Roadmap for future database integration.
 
 ---
 
-## 👤 Credits & Contact
+## 👤 Credits & Support
 
 <div align="center">
 
-✨
+🤖
 
-### Built by [Your Name](https://github.com/your-username)
+### Built for JIET Jodhpur
 
-*"Your project tagline or mission statement."*
+*"Instant answers, grounded in knowledge."*
 
 </div>
 
 <br/>
 
-> 📬 **Get in touch** — reach out on [GitHub](https://github.com/your-username), [X / Twitter](https://twitter.com/your-username), or via [email](mailto:support@yourproject.dev).
+> 📬 **Feedback & Support** — [Open a GitHub Issue](https://github.com/yourusername/JIET-AI-Assistant/issues) with details
 >
-> 🐛 **Found a bug?** [Open an issue](https://github.com/your-username/your-project/issues) with a detailed description and I'll take a look.
+> 🐛 **Found a bug?** Report it with steps to reproduce and expected vs. actual behavior
 >
-> 💡 **Have an idea?** [Start a discussion](https://github.com/your-username/your-project/discussions) — I'd love to hear it.
+> 💡 **Have a feature idea?** [Start a discussion](https://github.com/yourusername/JIET-AI-Assistant/discussions)
 >
-> ⭐ **Finding this useful?** A star on the repo helps others discover it too.
+> ⭐ **Enjoying this?** A star helps others discover it!
 
 <br/>
 
-Your Project is built on **React (Vite) + Tailwind CSS**, powered by **[Your Tech Stack]**, deployed on **Netlify**.
+JIET AI Assistant is powered by **FastAPI + LangChain + FAISS**, with intelligence from **Groq's LLaMA 3.3 70B**, deployed on **Netlify**.
 
 <div align="center">
 
 <br/>
 
-<sub>⭐ If this project brought your ideas to life, consider giving it a star.</sub>
+<sub>⭐ If JIET AI Assistant helped you, consider giving it a star on GitHub.</sub>
 
 <br/>
 
